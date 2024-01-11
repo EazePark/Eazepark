@@ -1,2 +1,2 @@
 Flask==2.1.2
-smtplib==0.1.4
+yagmail==0.14.260
