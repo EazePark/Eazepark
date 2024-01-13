@@ -4,40 +4,173 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Parking Payment</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-  <link rel="icon" href="{{ url_for('static', filename='favicon.jpg') }}">
+  <link rel="icon" href="favicon.jpg">
+  <img src="{{ url_for('static', filename='tez.png') }}" alt="Picture">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap">
   <style>
     body {
-      background-image: url("{{ url_for('static', filename='background.png') }}");
-      background-size: cover;
-      background-repeat: no-repeat;
+      background-color: white;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 36px;
+    }
+
+    .container {
+      text-align: center;
+      margin: 5%;
+    }
+
+    label {
+      font-size: 18px;
+    }
+
+    #moneyInput{
+      font-size: 44px;
+      padding: 10px;
+      width: 80%;
+      margin-bottom: 10px;
+      margin-top: -10%;
+      border: none;
+      outline: none;
+      text-align: center;
+    }
+    #carNumberInput {
+      font-size: 24px;
+      padding: 10px;
+      width: 80%;
+      margin-bottom: 10px;
+      border: none;
+      outline: none;
+      text-align: center;
+    }
+
+    #payButton {
+      background-color: #46acfe;
+      color: white;
+      font-size: 24px;
+      padding: 15px; /* Increase the padding for a larger button */
+      width: 30%;
+      border: none;
+      border-radius: 100px;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+
+    img {
+      width: 20%;
+      height: auto;
+      display: block;
+      margin: auto;
+      margin-top: 0%;
+    }
+
+    @media(max-width: 768px) {    
+      body {
+        background-color: white;
+        font-family: 'Roboto', sans-serif;
+      }
+
+      h1 {
+        text-align: center;
+        font-size: 36px;
+      }
+
+      .container {
+        text-align: center;
+        margin: 5%;
+      }
+
+      label {
+        font-size: 18px;
+      }
+
+      #moneyInput{
+        font-size: 44px;
+        padding: 10px;
+        width: 80%;
+        margin-bottom: 10px;
+        border: none;
+        outline: none;
+        text-align: center;
+      }
+      #carNumberInput {
+        font-size: 24px;
+        padding: 10px;
+        width: 80%;
+        margin-bottom: 10px;
+        border: none;
+        outline: none;
+        text-align: center;
+      }
+
+      #payButton {
+        background-color: #46acfe;
+        color: white;
+        font-size: 24px;
+        padding: 15px; /* Increase the padding for a larger button */
+        width: 80%;
+        border: none;
+        border-radius: 1000px;
+        cursor: pointer;
+        margin-bottom: 20px;
+      }
+
+      img {
+        width: 60%;
+        height: auto;
+        display: block;
+        margin: auto;
+        margin-top: 0%;
+        margin-left: 20%;
+        margin-bottom: 20%;
+      }
     }
   </style>
 </head>
-
 <body>
-  <h1>Parking Payment</h1>
-  <div class="container">
-    <form method="POST" action="/pay">
-      <label for="car_number">Car Number:</label>
-      <input type="text" id="car_number" name="car_number" required><br><br>
-
-      <label for="money">Money to be Paid (Rs):</label>
-      <input type="number" id="money" name="money" required><br><br>
-
-      <input type="submit" value="Pay">
-    </form>
-  </div>
-  <script>
-  document.addEventListener('DOMContentLoaded', function() {
+  <form action="/payment_successful" method="post">
+    <div class="container">
+      <input type="number" name="moneyInput" id="moneyInput" placeholder="Amount" required>
+      <input type="text" name="carNumberInput" id="carNumberInput" placeholder="Car Number" required>
+      <button id="payButton" onclick="pay()">Pay</button>
+    </div>
+  </form>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
     const urlParams = new URLSearchParams(window.location.search);
     const carNumber = urlParams.get('car_number');
     const money = urlParams.get('money');
 
-    document.getElementById('car_number').value = carNumber;
-    document.getElementById('money').value = money;
+    document.getElementById('carNumberInput').value = carNumber;
+    document.getElementById('moneyInput').value = money;
   });
+
+  function pay() {
+    const carNumber = document.getElementById('carNumberInput').value;
+    const money = document.getElementById('moneyInput').value;
+
+    // Check if the fields are not blank before making the AJAX request
+    if (carNumber.trim() !== '' || money.trim() !== '') {
+      $.ajax({
+      type: 'POST',
+      url: '/process_payment',  // Update the URL to match your Flask route
+      data: { carNumber: carNumber, money: money },
+      success: function (response) {
+        $('body').fadeOut(50000, function () {
+          window.location.href = '/payment_successful';
+        });
+      },
+      error: function (error) {
+        console.error(error);
+      }
+    });
+  }
+    
+  }
 </script>
 </body>
 
