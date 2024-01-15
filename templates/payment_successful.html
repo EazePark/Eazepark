@@ -91,14 +91,20 @@
     </style>
 </head>
 <body>
-    <video autoplay muted>
+    <video id="myVideo" autoplay muted onended="showText()">
         <!-- Replace 'Payment Successful.mp4' with the actual video file name and path -->
         <source src="{{ url_for('static', filename='Payment Successful.mp4') }}" type="video/mp4">
     </video>
-    <h1>Payment Successful</h1>
+    <h1 id="myText">Payment Successful</h1>
     <audio autoplay>
         <!-- Replace 'Payment Successful.mp4' with the actual audio file name and path -->
         <source src="{{ url_for('static', filename='Payment Successful.mp4') }}" type="audio/mp4">
     </audio>
+
+    <script>
+        function showText() {
+            document.getElementById("myText").style.opacity = "1";
+        }
+    </script>
 </body>
 </html>
