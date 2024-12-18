@@ -7,7 +7,7 @@ payments = {}
 
 # Gmail SMTP configuration (Replace with your Gmail credentials)
 smtp_username = "test1ofpython@gmail.com"
-smtp_password = "hwkwrrdtgcmolelx"
+smtp_password = "bjwmlishuadqpvyr"
 
 logging.basicConfig(level=logging.INFO)
 
